@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/fr.tp.inf112.projects.robotsim.iml" filepath="$PROJECT_DIR$/fr.tp.inf112.projects.robotsim.iml" />
+      <module fileurl="file://$PROJECT_DIR$/libs/jgrapht/source/jgrapht-core/jgrapht-core.iml" filepath="$PROJECT_DIR$/libs/jgrapht/source/jgrapht-core/jgrapht-core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/libs/jgrapht/source/jgrapht-demo/jgrapht-demo.iml" filepath="$PROJECT_DIR$/libs/jgrapht/source/jgrapht-demo/jgrapht-demo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/libs/jgrapht/source/jgrapht-dist/jgrapht-dist.iml" filepath="$PROJECT_DIR$/libs/jgrapht/source/jgrapht-dist/jgrapht-dist.iml" />
+      <module fileurl="file://$PROJECT_DIR$/libs/jgrapht/source/jgrapht-ext/jgrapht-ext.iml" filepath="$PROJECT_DIR$/libs/jgrapht/source/jgrapht-ext/jgrapht-ext.iml" />
+      <module fileurl="file://$PROJECT_DIR$/libs/jgrapht/source/jgrapht-guava/jgrapht-guava.iml" filepath="$PROJECT_DIR$/libs/jgrapht/source/jgrapht-guava/jgrapht-guava.iml" />
+      <module fileurl="file://$PROJECT_DIR$/libs/jgrapht/source/jgrapht-io/jgrapht-io.iml" filepath="$PROJECT_DIR$/libs/jgrapht/source/jgrapht-io/jgrapht-io.iml" />
+      <module fileurl="file://$PROJECT_DIR$/libs/jgrapht/source/jgrapht-opt/jgrapht-opt.iml" filepath="$PROJECT_DIR$/libs/jgrapht/source/jgrapht-opt/jgrapht-opt.iml" />
+      <module fileurl="file://$PROJECT_DIR$/libs/jgrapht/source/jgrapht-unimi-dsi/jgrapht-unimi-dsi.iml" filepath="$PROJECT_DIR$/libs/jgrapht/source/jgrapht-unimi-dsi/jgrapht-unimi-dsi.iml" />
+      <module fileurl="file://$PROJECT_DIR$/libs/jgrapht/source/source.iml" filepath="$PROJECT_DIR$/libs/jgrapht/source/source.iml" />
+    </modules>
+  </component>
+</project>
