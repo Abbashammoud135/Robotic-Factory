@@ -121,9 +121,23 @@ public class Robot extends Component {
 	private int moveToNextPathPosition() {
 		final Motion motion = computeMotion();
 		
-		final int displacement = motion == null ? 0 : motion.moveToTarget();
-			
-		notifyObservers();
+		int displacement = motion == null ? 0 : motion.moveToTarget();
+
+		if (displacement != 0) {
+			notifyObservers();
+		}
+		else if (isLivelyLocked()) {
+			final Position freeNeighbouringPosition =
+					findFreeNeighbouringPosition();
+
+			if (freeNeighbouringPosition != null) {
+				blockedTargetPosition = freeNeighbouringPosition;
+
+				displacement = moveToNextPathPosition();
+
+				computePathToCurrentTargetComponent();
+			}
+		}
 		
 		return displacement;
 	}
@@ -182,6 +196,77 @@ public class Robot extends Component {
 	    }
 	    
 	    return false;
+	}
+
+	private Position findFreeNeighbouringPosition() {
+		final Position currentPosition = getPosition();
+
+		final Component otherComponent =
+				getFactory().getMobileComponentAt(blockedTargetPosition, this);
+
+		if (!(otherComponent instanceof Robot)) {
+			return null;
+		}
+
+		final Position otherPosition = otherComponent.getPosition();
+
+		final int dx = otherPosition.getxCoordinate()
+				- currentPosition.getxCoordinate();
+
+		final int dy = otherPosition.getyCoordinate()
+				- currentPosition.getyCoordinate();
+
+		final int step = getFactory().getPathResolution();
+
+		final Position[] neighbouringPositions;
+
+		// Robots are facing each other horizontally
+		if (Math.abs(dx) > Math.abs(dy)) {
+			neighbouringPositions = new Position[] {
+					new Position(currentPosition.getxCoordinate(),
+							currentPosition.getyCoordinate() + step),
+					new Position(currentPosition.getxCoordinate(),
+							currentPosition.getyCoordinate() - step)
+			};
+		}
+		// Robots are facing each other vertically
+		else {
+			neighbouringPositions = new Position[] {
+					new Position(currentPosition.getxCoordinate() + step,
+							currentPosition.getyCoordinate()),
+					new Position(currentPosition.getxCoordinate() - step,
+							currentPosition.getyCoordinate())
+			};
+		}
+
+		for (final Position position : neighbouringPositions) {
+
+			if (position.getxCoordinate() < 0
+					|| position.getyCoordinate() < 0
+					|| position.getxCoordinate() + getWidth() > getFactory().getWidth()
+					|| position.getyCoordinate() + getHeight() > getFactory().getHeight()) {
+				continue;
+			}
+
+			final PositionedShape candidateShape =
+					new RectangularShape(
+							position.getxCoordinate(),
+							position.getyCoordinate(),
+							getWidth(),
+							getHeight());
+
+			if (getFactory().hasObstacleAt(candidateShape)) {
+				continue;
+			}
+
+			if (getFactory().hasMobileComponentAt(candidateShape, this)) {
+				continue;
+			}
+
+			return position;
+		}
+
+		return null;
 	}
 
 	private boolean hasReachedCurrentTarget() {
