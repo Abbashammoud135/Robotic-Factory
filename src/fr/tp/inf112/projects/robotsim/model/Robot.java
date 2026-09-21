@@ -118,28 +118,32 @@ public class Robot extends Component {
 		return targetComponentsIterator.hasNext() ? targetComponentsIterator.next() : null;
 	}
 	
+	// Wrapped in a lock shared by every robot's thread (the Factory instance) so that
+	// checking whether a position is free and moving into it happen as one atomic step.
 	private int moveToNextPathPosition() {
-		final Motion motion = computeMotion();
-		
-		int displacement = motion == null ? 0 : motion.moveToTarget();
+		synchronized (getFactory()) {
+			final Motion motion = computeMotion();
 
-		if (displacement != 0) {
-			notifyObservers();
-		}
-		else if (isLivelyLocked()) {
-			final Position freeNeighbouringPosition =
-					findFreeNeighbouringPosition();
+			int displacement = motion == null ? 0 : motion.moveToTarget();
 
-			if (freeNeighbouringPosition != null) {
-				blockedTargetPosition = freeNeighbouringPosition;
-
-				displacement = moveToNextPathPosition();
-
-				computePathToCurrentTargetComponent();
+			if (displacement != 0) {
+				notifyObservers();
 			}
+			else if (isLivelyLocked()) {
+				final Position freeNeighbouringPosition =
+						findFreeNeighbouringPosition();
+
+				if (freeNeighbouringPosition != null) {
+					blockedTargetPosition = freeNeighbouringPosition;
+
+					displacement = moveToNextPathPosition();
+
+					computePathToCurrentTargetComponent();
+				}
+			}
+
+			return displacement;
 		}
-		
-		return displacement;
 	}
 	
 	private void computePathToCurrentTargetComponent() {

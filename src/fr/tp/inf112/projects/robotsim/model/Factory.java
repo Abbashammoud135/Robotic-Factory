@@ -114,16 +114,9 @@ public class Factory extends Component implements Canvas, Observable {
 			this.simulationStarted = true;
 			notifyObservers();
 
-			while (isSimulationStarted()) {
-				behave();
-				
-				try {
-					Thread.sleep(100);
-				}
-				catch (final InterruptedException ex) {
-					System.err.println("Simulation was abruptly interrupted");
-				}
-			}
+			// The repeated behave()/sleep loop now lives in each component's own
+			// run() method (one thread per component), so this only needs to run once.
+			behave();
 		}
 	}
 
@@ -137,13 +130,13 @@ public class Factory extends Component implements Canvas, Observable {
 
 	@Override
 	public boolean behave() {
-		boolean behaved = true;
-		
+		// Each component now drives its own behave() calls from its own thread's
+		// run() loop, so this just needs to launch them.
 		for (final Component component : getComponents()) {
-			behaved = component.behave() || behaved;
+			new Thread(component).start();
 		}
-		
-		return behaved;
+
+		return true;
 	}
 	
 	@Override
